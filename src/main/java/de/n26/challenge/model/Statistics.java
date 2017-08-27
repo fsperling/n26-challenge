@@ -82,7 +82,9 @@ public class Statistics {
 
     public Statistics combineWith(Statistics s) {
         this.max = Math.max(this.max, s.getMax());
-        this.min = Math.min(this.min, s.getMin());
+        // assuming that there are no transactions with an amount of 0
+        // therefore a min of 0 means it's still the default value and it gets replaced
+        this.min = this.min == 0 ? s.getMin() : Math.min(this.min, s.getMin());
         this.sum = this.sum + s.getSum();
         this.avg = (this.avg * this.count + 
                 s.getAvg() * s.getCount()) / (this.count + s.getCount());

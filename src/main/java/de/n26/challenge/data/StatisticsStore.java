@@ -3,7 +3,6 @@ package de.n26.challenge.data;
 import de.n26.challenge.model.Statistics;
 import de.n26.challenge.model.Transaction;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -38,11 +37,10 @@ public class StatisticsStore {
 
     public Statistics getTransactionStats() {
         Statistics stats = new Statistics();
-        stats.setMin(Double.MAX_VALUE);
         
         Instant now = Instant.now();
         for(int i = 0; i < 60; i++) {
-            Integer secs = (int) now.minus(i, ChronoUnit.SECONDS).getEpochSecond();
+            Integer secs = (int) now.minusSeconds(i).getEpochSecond();
             Statistics s = transactionStats.get(secs);
             if (s != null) {
                 stats.combineWith(s);
